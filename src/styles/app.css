@@ -12,6 +12,12 @@ body{
     background-image: url('../assets/images/bg.jpg');
 }
 
+/******************/
+/** app **/
+/******************/
+
+/* Desktop default */
+
 .main-app-center{
     padding-bottom: 50px;
 }

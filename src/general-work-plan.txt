@@ -12,7 +12,7 @@ reduce sizes in photoshop to lowest for web
 4. Creating visibility of the game - every sqaure as a card with question mark on it, 
     hover will enlarge the question mark just a bit with animation.
     The color palette will be taken from the TradAir site
-7. Implement Autoprefixer to get all browsers support 
+7. Set configuration to get all browsers support for 10 last version
 6. Creating Time counter
 
 7. Extras: 

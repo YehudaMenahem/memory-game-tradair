@@ -57,8 +57,7 @@ const MemoryBoard = props =>{
                 //show a message for user
                 
         //if not - cover them
-            //make the selectedCard null
-        
+            //make the selectedCard null   
     }
 
     //double the images countity and "mixed" randomly the array order for the board
@@ -75,20 +74,21 @@ const MemoryBoard = props =>{
         //shuffle array
         concatImgsArrs = shuffle(concatImgsArrs);
 
+        //the game board to render
         let view = 
-        <div className={"board"}>
-            {concatImgsArrs.map((img,index) => { 
-                return(
-                    // iterating the imgsArr from reducer to present in squares 
-                    <div className={"card"} key={`${img.key}-${index}`} onClick={(e)=>{clickCard(e,props.flippedCard,props.setFlippedCard)}}>
-                        <div className={"img-hider"}>
-                            <i className={"icon question circle outline"}></i>
-                        </div>
-                        <img src={`${img.path}`} alt={`memory-game-${img.key}`} className={'img'} name={`${img.key}`}/>
-                    </div> 
-                );
-            })}
-        </div>
+            <div className={"board"}>
+                {concatImgsArrs.map((img,index) => { 
+                    return(
+                        // iterating the imgsArr from reducer to present in squares 
+                        <div className={"card"} key={`${img.key}-${index}`} onClick={(e)=>{clickCard(e,props.flippedCard,props.setFlippedCard)}}>
+                            <div className={"img-hider"}>
+                                <i className={"icon question circle outline"}></i>
+                            </div>
+                            <img src={`${img.path}`} alt={`memory-game-${img.key}`} className={'img'} name={`${img.key}`}/>
+                        </div> 
+                    );
+                })}
+            </div>
 
         return view;
     }
@@ -97,10 +97,10 @@ const MemoryBoard = props =>{
     const shuffle = (array) => {
         var currentIndex = array.length, temporaryValue, randomIndex;
       
-        // While there remain elements to shuffle...
+        // While there remain elements to shuffle
         while (0 !== currentIndex) {
       
-          // Pick a remaining element...
+          // Pick a remaining element
           randomIndex = Math.floor(Math.random() * currentIndex);
           currentIndex -= 1;
       
