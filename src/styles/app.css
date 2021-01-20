@@ -1,0 +1,27 @@
+
+/* general */
+*{
+    box-sizing: border-box;
+}
+
+h1,p{
+    color: #000;
+}
+
+body{
+    background-image: url('../assets/images/bg.jpg');
+}
+
+.main-app-center{
+    padding-bottom: 50px;
+}
+
+/* Tablet */
+@media (max-width: 780px ) and (min-width: 500px ){
+
+}
+
+/* Mobile */
+@media screen and(max-width: 500px){
+
+}

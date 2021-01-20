@@ -1,0 +1,20 @@
+
+Steps:
+
+1. Create the main pages - App, MemoryBoard component, reducers, action, styles, images
+2. Download 18 images (same category related) and add them to project in images folder | if there's time
+reduce sizes in photoshop to lowest for web
+3. Creating functionaly of Memory Game: 
+    a. Every image get duplicated 
+    b. Order of images get mixed
+    c. Images get rendered in the memory board component as sqaures
+    d. The game - clicking two images sqaures will 'remove' both from game or 'remain' them
+4. Creating visibility of the game - every sqaure as a card with question mark on it, 
+    hover will enlarge the question mark just a bit with animation.
+    The color palette will be taken from the TradAir site
+7. Implement Autoprefixer to get all browsers support 
+6. Creating Time counter
+
+7. Extras: 
+    a.Learning a bit & making a unit-test for the memory board component
+    b.Transfomr css into scss
