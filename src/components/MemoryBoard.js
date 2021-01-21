@@ -1,91 +1,94 @@
-import React,{ useState, useEffect } from 'react';
+import React,{ useState } from 'react';
 import { connect } from 'react-redux';
 import { setFlippedCard } from './../actions';
+
+//import components
+import Card from './Card';
 
 //import css
 import './../styles/memory-board.css'
 
-const MemoryBoard = props =>{
+const MemoryBoard = React.memo((props) =>{
 
-    const [gameName,setGameName] = useState(props.gameName);
-    // const [selectedCard, setSelectedCard] = useState(props.flippedCard);
-    const [imgs] = useState([
-        {key:'amelie', path:require('./../assets/images/amelie.jpg').default},
-        {key:'back-to-the-future', path:require('./../assets/images/back_to_the_future.jpg').default},
-        {key:'paris_is_burning', path:require('./../assets/images/parris_is_burning.jpg').default},
-        {key:'pulp_fiction', path:require('./../assets/images/pulp_fiction.jpg').default},
-        {key:'reservior_dogs', path:require('./../assets/images/reservior_dogs.jpg').default},
-        {key:'terminator', path:require('./../assets/images/terminator.jpg').default},
-        {key:'aladdin', path:require('./../assets/images/aladdin.jpg').default},
-        {key:'dirty_dancing', path:require('./../assets/images/dirty_dancing.jpg').default},
-        {key:'nightmare_elem_street', path:require('./../assets/images/nightmare_elem_street.jpg').default},
-        {key:'big', path:require('./../assets/images/big.jpg').default},
-        {key:'mission_impossible', path:require('./../assets/images/mission_impossible.jpg').default},
-        {key:'indiana_jones', path:require('./../assets/images/indiana_jones.jpeg').default},
-        {key:'fight_club', path:require('./../assets/images/fight_club.jpg').default},
-        {key:'the_shining', path:require('./../assets/images/the_shining.jpg').default},
-        {key:'scream', path:require('./../assets/images/scream.jpg').default},
-        {key:'home_alone', path:require('./../assets/images/home_alone.jpg').default},
-        {key:'matrix', path:require('./../assets/images/matrix.jpg').default},
-        {key:'lambs_silience', path:require('./../assets/images/lambs_silience.jpg').default}
-    ]);
+    const [gameName] = useState(props.gameName);
+    const [succesMsg] =useState(false);
 
-    //fn. click on card (an image) 
+
+    //click on card (an image) 
     const clickCard = (e,currentFlippedCard,reduxFlippedAction) =>{
 
         let card  = e.currentTarget;
-        //if card disabled - return
+        let lastCardChosen = document.querySelector('.card.choose');
 
-        let imgHiderDiv = e.currentTarget.children[0];
+        //if the timeout of showing the cards for the user for a bit didn't happen yet
+        let isFunctionInProcess = document.querySelectorAll('.card.choose').length > 1;
+
+        //if card already guessed or chosen - go out of the function
+        if (card.classList.contains('guessed') || card.classList.contains('choose') || isFunctionInProcess)
+            return 
         let img  = e.currentTarget.children[1];
 
         //first card flip (selectedCard is null)
         if(!currentFlippedCard){
+            card.classList.add('choose');
+
             //set the flippedCard in redux to it's name
             reduxFlippedAction(img.name);
-            card.classList.add('choose');
-        }
-
+            
         //second card flip 
         //check if the movies cards identical --> names are equal
-        //if identical -> which means the name equal to the selectedCard from redux 
-            //keep cards reveal 
-            //make cards disabled and cursor should be not-allow
-            //make the selectedCard null
+        } else if(img.name === currentFlippedCard){
+            card.classList.add('guessed');
+            lastCardChosen.classList.add('guessed');    
+            lastCardChosen.classList.remove('choose');
+            reduxFlippedAction(null);
 
-            //if game completed - all cards revealed
-                //show a message for user
-                
-        //if not - cover them
-            //make the selectedCard null   
+            // board state - completed or not completed
+            let boardCompleted;
+            let allCards = document.querySelectorAll('.card');
+            for(let i=0; i<allCards.length; i++){
+                if(!allCards[i].classList.contains('guessed')){
+                    boardCompleted = false;
+                    return;
+                }
+                boardCompleted = true;
+            }
+
+            //when board completed
+            if(boardCompleted){
+                //show a msg to user
+                alert(`Wow! You made it. Epic!!`);
+            }
+
+        // cards didn't match
+        } else {
+            //show the next card for 1 second
+            card.classList.add('choose');
+
+            //then flip it again
+            setTimeout(()=>{
+                card.classList.remove('choose');
+
+                //flip the other revealed card
+                lastCardChosen.classList.remove('choose');
+            },1000);
+            reduxFlippedAction(null);
+        } 
     }
 
     //double the images countity and "mixed" randomly the array order for the board
-    const renderBoard = (flippedCard) =>{
-        //original arr
-        let imgsArray = imgs;
-
-        //duplicate arr
-        let imgsDup = [...imgs];
-
-        //concat both arrays so we'll have two of rach card
-        let concatImgsArrs = imgsArray.concat(imgsDup);
+    const renderBoard = () =>{
 
         //shuffle array
-        concatImgsArrs = shuffle(concatImgsArrs);
+        // concatImgsArrs = shuffle(concatImgsArrs);
 
         //the game board to render
         let view = 
             <div className={"board"}>
-                {concatImgsArrs.map((img,index) => { 
+                {props.imgs.map((img,index) => { 
                     return(
-                        // iterating the imgsArr from reducer to present in squares 
-                        <div className={"card"} key={`${img.key}-${index}`} onClick={(e)=>{clickCard(e,props.flippedCard,props.setFlippedCard)}}>
-                            <div className={"img-hider"}>
-                                <i className={"icon question circle outline"}></i>
-                            </div>
-                            <img src={`${img.path}`} alt={`memory-game-${img.key}`} className={'img'} name={`${img.key}`}/>
-                        </div> 
+                        // iterating the imgsArr from reducer to present in squares  
+                        <Card key={`${img.key}-${index}`} img={img} selectedCard={props.flippedCard} click={(e)=>{clickCard(e,props.flippedCard,props.setFlippedCard)}}/>
                     );
                 })}
             </div>
@@ -93,36 +96,15 @@ const MemoryBoard = props =>{
         return view;
     }
 
-    //mix randomly the order of the cards
-    const shuffle = (array) => {
-        var currentIndex = array.length, temporaryValue, randomIndex;
-      
-        // While there remain elements to shuffle
-        while (0 !== currentIndex) {
-      
-          // Pick a remaining element
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
-      
-          // And swap it with the current element.
-          temporaryValue = array[currentIndex];
-          array[currentIndex] = array[randomIndex];
-          array[randomIndex] = temporaryValue;
-        }
-      
-        return array;
-      }
-
-
-
     return (
         <div className={'memory-board'}>
             <p className={"pre-title"}>- Take a little break for some memory game -</p>
             <h1 className={"title"}>{gameName}</h1>
-                {renderBoard(props.flippedCard)}
+            {renderBoard()}
+            <p>{succesMsg ? "Wow, you made it!!" : ""}</p>
         </div>
     )
-};
+});
 
 const mapStateToProps = (state) =>{
     return { flippedCard: state.flippedCard }
