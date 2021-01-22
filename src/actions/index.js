@@ -5,3 +5,11 @@ export const setFlippedCard = (flippedCard) =>{
         payload: flippedCard
     };
 };
+
+//Action creator 
+export const setModal = (modalSettings) =>{
+    return {
+        type: 'MODAL_SETTINGS',
+        payload: modalSettings
+    };
+};

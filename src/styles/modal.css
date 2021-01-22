@@ -1,0 +1,147 @@
+/*******************/
+/* modal component */
+/*******************/
+.modal {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	flex-direction: column;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+	animation: fade-in-background 0.15s forwards;
+}
+
+.modal.close {
+	animation: fade-out-background 0.15s forwards;
+}
+
+.modal.close .box {
+	animation: pop-out .2s forwards;
+}
+
+.modal.hero-image .box .header {
+	background-image: #cdcdcd;
+	position: relative;
+	height: 315px;
+	border-bottom: 1px solid #495057;
+	overflow: hidden;
+}
+
+.modal.hero-image .box .header .hero {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 380px;
+}
+
+.modal.hero-image .box .header .close-sign {
+	position: absolute;
+	right: 20px;
+}
+
+.modal .box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	min-width: 450px;
+	background-color: #cdcdcd;
+	border-radius: 3px;
+	position: relative;
+	overflow: hidden;
+	transform: scale(0);
+	animation: pop-in .2s .3s forwards;
+}
+
+.modal .box .header {
+	display: flex;
+	justify-content: center;
+	background: #6e8d92;
+	padding: 20px;
+	color: #efefef;
+	left: 0;
+	top: 0;
+	width: 100%;
+}
+
+.modal .box .header h3 {
+	margin: auto;
+}
+
+.dark .modal .box .header h3 {
+	color: #000;
+}
+
+.modal .box .body {
+	padding: 35px 25px;
+}
+
+.modal .box .body.grid {
+	width: 100%;
+}
+
+.dark .modal .box .body h2, .dark .modal .box .body p {
+	color: #000;
+}
+
+.modal .box .footer {
+	display: flex;
+	justify-content: center;
+	padding: 25px;
+}
+
+.modal .box .close-sign {
+	margin-right: 0;
+	font-size: 17px;
+	cursor: pointer;
+	color: #1b1825;
+	transition: transform .3s;
+}
+
+.modal .box .close-sign:hover {
+	transform: rotate(90deg);
+}
+
+/*********/
+/* media query */
+/*********/
+@media screen and (max-width: 500px) {
+	.modal.close .box {
+		min-width: auto;
+	}
+
+	.modal .box {
+		top: 25px;
+		max-height: 500px;
+	}
+}
+
+/*********/
+/* aniamtions */
+/*********/
+
+@keyframes fade-in-background{
+    from {background-color: transparent}
+    to {background-color: rgba(0,0,0,0.95)}
+}
+
+@keyframes fade-out-background{
+    from {background-color: rgba(0,0,0,0.95)}
+    to {background-color: transparent}
+}
+
+@keyframes pop-in{
+    0%{opacity:0.3; transform: scale(0)}
+    75%{opacity:0.6; transform: scale(1.2)}
+    100%{opacity:1; transform: scale(1)}
+}
+
+@keyframes pop-out{
+    0%{opacity:1; transform: scale(1)}
+    25%{opacity:0.6; transform: scale(1.2)}
+    100%{opacity:0.3; transform: scale(0)}
+}

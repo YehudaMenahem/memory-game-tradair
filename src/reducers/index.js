@@ -9,6 +9,14 @@ const flippedCardReducer = (flippedCard=null,action) =>{
     return flippedCard;
 }
 
+const modalSettingsRedcuder = (modalSet={showModal:false},action) =>{    
+    if(action.type === 'MODAL_SETTINGS'){
+        return action.payload;
+    }
+    return modalSet;
+}
+
 export default combineReducers({
-    flippedCard: flippedCardReducer
+    flippedCard: flippedCardReducer,
+    modalSettings: modalSettingsRedcuder
 });

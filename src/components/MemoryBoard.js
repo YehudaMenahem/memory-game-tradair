@@ -1,6 +1,6 @@
 import React,{ useState } from 'react';
 import { connect } from 'react-redux';
-import { setFlippedCard } from './../actions';
+import { setFlippedCard, setModal} from './../actions';
 
 //import components
 import Card from './Card';
@@ -11,8 +11,17 @@ import './../styles/memory-board.css'
 const MemoryBoard = React.memo((props) =>{
 
     const [gameName] = useState(props.gameName);
-    const [succesMsg] =useState(false);
+    const [succesMsg] = useState(false);
 
+    //set success modal
+    const openModal = () =>{
+        props.setModal({
+            showModal:true,
+            headerTitle:'Congratulations',
+            contentTitle:'Wow!',
+            contentRunningText:`You completed the board. epic!!`
+        });
+    }
 
     //click on card (an image) 
     const clickCard = (e,currentFlippedCard,reduxFlippedAction) =>{
@@ -56,8 +65,9 @@ const MemoryBoard = React.memo((props) =>{
 
             //when board completed
             if(boardCompleted){
-                //show a msg to user
-                alert(`Wow! You made it. Epic!!`);
+                //show success modal user
+                //or a msg for now
+                alert('Wow, You made it! epic!!')
             }
 
         // cards didn't match
@@ -110,4 +120,4 @@ const mapStateToProps = (state) =>{
     return { flippedCard: state.flippedCard }
 }
 
-export default connect(mapStateToProps,{setFlippedCard})(MemoryBoard);
+export default connect(mapStateToProps,{setFlippedCard,setModal})(MemoryBoard);
