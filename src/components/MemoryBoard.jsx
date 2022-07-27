@@ -1,12 +1,15 @@
-import React,{ useEffect, useState, useRef } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { setFlippedCard, setModal } from '../actions';
+import React,{useState, useRef } from 'react'
+import { connect, useDispatch } from 'react-redux'
+import { setFlippedCard, setModal } from '../actions'
 
 //import components
-import Card from './Card';
+import Card from './Card'
 
 //import css
 import './../styles/memory-board.css'
+
+//import assets
+import stevenHeroImage from './../assets/images/steven_s_hero_3.jpeg'  
 
 const MemoryBoard = ({ gameName, movies, setModal, flippedCard }) =>{
     const [val, setVal] = useState(0)
@@ -18,10 +21,11 @@ const MemoryBoard = ({ gameName, movies, setModal, flippedCard }) =>{
     const openModal = () =>{
         setModal({
             showModal:true,
+            heroImage: stevenHeroImage,
             headerTitle:'Congratulations',
             contentTitle:'Wow!',
             contentRunningText:`You completed the board. Epic!!`
-        });
+        })
     }
 
     //click on card (an image) 
@@ -40,42 +44,45 @@ const MemoryBoard = ({ gameName, movies, setModal, flippedCard }) =>{
 
         //first card flip 
         if(!flipped){
-            movies.map((card) => {
+            movies.forEach((card) => {
                 if(card.id === cardId){
                     card.status = 'choose' 
                 }
             })
             //set the flippedCard in redux to it's name
-            dispatch(setFlippedCard(cardImgName));
+            dispatch(setFlippedCard(cardImgName))
             
         //second card flip 
         //check if the movies cards identical
         } else if(cardImgName === flipped){
-            movies.map((card) => { 
+            movies.forEach((card) => { 
                 if(card.name === cardImgName)
                     card.status = 'guessed' 
             })
-            dispatch(setFlippedCard(null));
+            dispatch(setFlippedCard(null))
 
             //check if all pairs guessed 
             guessedPairsCounter.current++
 
+            //all paris guessed
             if(guessedPairsCounter.current === numOfPairs){ 
                 setTimeout(() => {
                     //show success modal
                     openModal()
                     guessedPairsCounter.current = 0
-                    movies.map(card => card.status='unrevealed')
-                }, 500);
+                    dispatch(setFlippedCard(null))
+                    movies.forEach(card => card.status = 'unrevealed')
+                    setVal(val+1) 
+                }, 500)
             }
 
         //cards didn't match
         } else {
             //show the next card for 1 second
             //and then flip it again
-            movies.map(card=>{ card.id === cardId && (card.status = 'choose')})
+            movies.forEach(card=>{ card.id === cardId && (card.status = 'choose')})
             setTimeout(()=>{
-                movies.map(card=>{ 
+                movies.forEach(card=>{ 
                     if(card.id === cardId){
                         card.status = 'unrevealed'
                     } 
@@ -85,8 +92,8 @@ const MemoryBoard = ({ gameName, movies, setModal, flippedCard }) =>{
                     }
                 })
                 setVal(val+1) 
-            },1000);
-            dispatch(setFlippedCard(null));
+            },1000)
+            dispatch(setFlippedCard(null))
         } 
     }
 
@@ -101,10 +108,10 @@ const MemoryBoard = ({ gameName, movies, setModal, flippedCard }) =>{
                             click={()=>{clickCard(img.status, img.name, img.id)}}
                             status={img.status}
                         />
-                    );
+                    )
                 })}
             </div>
-        return view;
+        return view
     }
 
     return (
@@ -114,10 +121,10 @@ const MemoryBoard = ({ gameName, movies, setModal, flippedCard }) =>{
             {renderBoard()}
         </div>
     )
-};
+}
 
 const mapStateToProps = (state) =>{
     return { flippedCard: state.flippedCard }
 }
 
-export default connect(mapStateToProps,{setFlippedCard,setModal})(MemoryBoard);
+export default connect(mapStateToProps,{setFlippedCard,setModal})(MemoryBoard)

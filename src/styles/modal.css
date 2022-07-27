@@ -41,6 +41,7 @@
 .modal.hero-image .box .header .close-sign {
 	position: absolute;
 	right: 20px;
+	color: #ababab
 }
 
 .modal .box {
@@ -126,11 +127,11 @@
 
 @keyframes fade-in-background{
     from {background-color: transparent}
-    to {background-color: rgba(0,0,0,0.95)}
+    to {background-color: rgba(0,0,0,0.75)}
 }
 
 @keyframes fade-out-background{
-    from {background-color: rgba(0,0,0,0.95)}
+    from {background-color: rgba(0,0,0,0.75)}
     to {background-color: transparent}
 }
 

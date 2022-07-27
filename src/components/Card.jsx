@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 //import css
 import './../styles/card.css'
@@ -16,6 +16,6 @@ const Card = ({ img, click, status }) => {
                 name={`${img.name}`}/>
         </div>
     )
-};
+}
 
-export default Card;
+export default Card

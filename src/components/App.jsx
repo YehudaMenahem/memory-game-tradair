@@ -1,8 +1,7 @@
-import React,{useEffect, useState} from 'react';
+import React,{useState} from 'react'
 
 //redux
-import { connect, useDispatch } from 'react-redux';
-import { setModal } from '../actions';
+import { connect } from 'react-redux'
 
 //components
 import MemoryBoard from './MemoryBoard'
@@ -10,20 +9,13 @@ import Modal from './Modal'
 
 //styles 
 import './../styles/app.css'
-import './../styles/modal.css'
 
 //data
 import { movies } from '../movies/movies'
 
 const App = ({ modalSettings }) =>{
 
-    const dispatch = useDispatch()
-
-    const [moviesImgs] = useState(movies);
-
-    const closeModal = () =>{
-        dispatch(setModal({showModal:false}))
-    }
+    const [moviesCards] = useState(movies)
 
     //mix randomly the order of the cards
     const dupAndshuffle = (array) => {
@@ -35,38 +27,38 @@ const App = ({ modalSettings }) =>{
         })
         
         let dupShuffleArray = [...array, ...copiedArray]
+        dupShuffleArray.forEach(card => card.status = 'unrevelaed')
 
         //shuffle array
-        var currentIndex = dupShuffleArray.length, temporaryValue, randomIndex;
+        var currentIndex = dupShuffleArray.length, temporaryValue, randomIndex
       
         //while there remain elements to shuffle
         while (0 !== currentIndex) {
       
           //pick a remaining element
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
+          randomIndex = Math.floor(Math.random() * currentIndex)
+          currentIndex -= 1
       
           //and swap it with the current element.
-          temporaryValue = dupShuffleArray[currentIndex];
-          dupShuffleArray[currentIndex] = dupShuffleArray[randomIndex];
-          dupShuffleArray[randomIndex] = temporaryValue;
+          temporaryValue = dupShuffleArray[currentIndex]
+          dupShuffleArray[currentIndex] = dupShuffleArray[randomIndex]
+          dupShuffleArray[randomIndex] = temporaryValue
         }
 
         for(let i=0; i<dupShuffleArray.length; i++){
             dupShuffleArray[i].id = `${dupShuffleArray[i].name}-${i}`
         }
       
-        return dupShuffleArray;
+        return dupShuffleArray
     }
 
     return (
         <>
             <div className={"main-app-center"}>
-                <MemoryBoard movies={dupAndshuffle(moviesImgs)} gameName={"Blast From The Past..."}/>
+                <MemoryBoard movies={dupAndshuffle(moviesCards)} gameName={"Blast From The Past..."}/>
             </div>
             <Modal 
                 show={modalSettings.showModal} 
-                closeModal={closeModal}
                 modalTitle={modalSettings.headerTitle}
                 heroImage={modalSettings.heroImage}
                 >
@@ -85,4 +77,4 @@ const mapStateToProps = (state) =>{
     return { modalSettings: state.modalSettings }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(App)
